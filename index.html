@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#143f82">
+<meta name="theme-color" content="#d1233f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Job Log">
@@ -83,6 +83,10 @@
   .voice.on .dot { background: var(--rec); }
   @media (prefers-reduced-motion: no-preference) { .voice.on .dot { animation: pulse 1s infinite; } }
   @keyframes pulse { 50% { opacity: .3; } }
+  .typed { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; margin: -2px 0 14px; }
+  .typed label, .small-label { display: block; font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+  .typed input { padding: 10px 12px; }
+  textarea.short { min-height: 64px; margin-bottom: 4px; }
   .hint { color: var(--muted); font-size: 14px; margin: 4px 0 0; }
   .error { color: var(--warn); font-weight: 600; margin-top: 12px; }
 
@@ -140,6 +144,67 @@
   .places li { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); }
   .updated { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; margin-top: 14px; }
   .linkish { background: none; border: 0; color: var(--blue); font: 600 15px Barlow, sans-serif; padding: 16px 0; }
+
+  /* ===== Rainbow theme ===== */
+  :root {
+    --r1: #d1233f; --r2: #e2561a; --r3: #c98a00; --r4: #23894f; --r5: #1b6fc9; --r6: #5634b8; --r7: #8e2aa3;
+    --rainbow: linear-gradient(90deg, var(--r1), var(--r2), var(--r3), var(--r4), var(--r5), var(--r6), var(--r7));
+    --bg: #f6f3fb; --line: #d9d0ea; --blue-soft: #efe9f8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --r1: #ff5c74; --r2: #ff8a4c; --r3: #ffc83d; --r4: #4fd08a; --r5: #5aa8ff; --r6: #9b80ff; --r7: #e070f0;
+      --bg: #120e1c; --surface: #1d1729; --line: #352b4a; --blue-soft: #2a2140;
+    }
+  }
+  .top { background: var(--rainbow); }
+  .top, .top h1, nav button { text-shadow: 0 1px 2px rgba(0,0,0,.45); }
+  nav button { color: rgba(255,255,255,.85); }
+  nav button[aria-selected=true] { color: #fff; border-bottom-color: #fff; }
+  .pill { background: rgba(0,0,0,.28); text-shadow: none; }
+
+  .tile { border-left: 8px solid var(--c); }
+  .tile.done { border-color: var(--c); border-left-width: 8px; }
+  .tile .tab { background: color-mix(in srgb, var(--c) 18%, var(--surface)); }
+  .tile[data-tile=serial] { --c: var(--r1); }
+  .tile[data-tile=billing] { --c: var(--r4); }
+  .tile[data-tile=part] { --c: var(--r5); }
+  .thumbs img { border-color: var(--r5); }
+
+  .status button[data-status="Closed"][aria-pressed=true] { background: var(--r4); border-color: var(--r4); color: #fff; }
+  .status button[data-status="Open"][aria-pressed=true] { background: var(--r5); border-color: var(--r5); color: #fff; }
+  .status button[data-status="Awaiting parts"][aria-pressed=true] { background: var(--r2); border-color: var(--r2); color: #fff; }
+
+  .voice { border-color: var(--r6); background: color-mix(in srgb, var(--r6) 14%, var(--surface)); }
+  .voice .dot { background: var(--r6); }
+
+  .primary { background: var(--rainbow); color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+  .ghost { color: var(--r6); border-color: var(--r6); }
+  .linkish { color: var(--r6); }
+  input:focus, textarea:focus, select:focus, button:focus-visible, summary:focus-visible { outline-color: var(--r6); }
+
+  .result { border-left-color: var(--r4); }
+  .result.flag { border-left-color: var(--r2); }
+
+  details, .fu { border-left: 6px solid var(--c, var(--r5)); }
+  details:nth-child(7n+1), .fu:nth-child(7n+1) { --c: var(--r1); }
+  details:nth-child(7n+2), .fu:nth-child(7n+2) { --c: var(--r2); }
+  details:nth-child(7n+3), .fu:nth-child(7n+3) { --c: var(--r3); }
+  details:nth-child(7n+4), .fu:nth-child(7n+4) { --c: var(--r4); }
+  details:nth-child(7n+5), .fu:nth-child(7n+5) { --c: var(--r5); }
+  details:nth-child(7n+6), .fu:nth-child(7n+6) { --c: var(--r6); }
+  details:nth-child(7n+7), .fu:nth-child(7n+7) { --c: var(--r7); }
+  details[open] { border-color: var(--c); }
+  .chev { color: var(--c); }
+
+  .stats { background: #1b1430; }
+  .stats div { border-top: 5px solid var(--c); padding-top: 8px; }
+  .stats div:nth-child(1) { --c: #ff5c74; } .stats div:nth-child(2) { --c: #ffc83d; }
+  .stats div:nth-child(3) { --c: #4fd08a; } .stats div:nth-child(4) { --c: #5aa8ff; }
+  .stats .big { color: var(--c); }
+  .needs { border-color: var(--r2); }
+  .needs .big { color: var(--r2); }
+  .bar.today i { outline-color: var(--ink); background: inherit; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -171,8 +236,12 @@
   <h2>Photos</h2>
   <div class="tile" data-tile="serial">
     <div class="tab">🏷️</div>
-    <div><b>Serial label</b><small>Required. Get the whole sticker in frame.</small></div>
+    <div><b>Serial label</b><small>Photo, or type it below.</small></div>
     <input type="file" accept="image/*" capture="environment" data-kind="serial" aria-label="Serial label photo">
+  </div>
+  <div class="typed">
+    <div><label for="t-serial">Serial #</label><input type="text" id="t-serial" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Type if no photo"></div>
+    <div><label for="t-model">Model</label><input type="text" id="t-model" autocomplete="off" spellcheck="false" placeholder="Optional"></div>
   </div>
   <div class="tile" data-tile="billing">
     <div class="tab">🧾</div>
@@ -181,10 +250,12 @@
   </div>
   <div class="tile" data-tile="part">
     <div class="tab">⚙️</div>
-    <div><b>Parts needed</b><small id="part-hint">One photo per part, label side up. Skip if none.</small></div>
+    <div><b>Parts needed</b><small id="part-hint">Photo each part, or type them below.</small></div>
     <input type="file" accept="image/*" capture="environment" data-kind="part" aria-label="Part photo">
   </div>
   <div class="thumbs" id="part-thumbs"></div>
+  <label class="small-label" for="t-parts">Type parts needed, one per line</label>
+  <textarea id="t-parts" class="short" autocomplete="off" spellcheck="false" placeholder="Feed roller kit 604K56080&#10;Fuser"></textarea>
 
   <label class="field" for="customer">Customer</label>
   <input type="text" id="customer" list="customers" autocomplete="off" placeholder="Start typing">
@@ -401,9 +472,9 @@ function renderDash() {
 
   const max = Math.max(1, ...d.daily.map(x => x.count));
   const today = localDate();
-  $('d-chart').innerHTML = d.daily.map(x => `
+  $('d-chart').innerHTML = d.daily.map((x, i) => `
     <div class="bar${x.date === today ? ' today' : ''}" title="${esc(x.date)}: ${x.count}">
-      <b>${x.count || ''}</b><i style="height:${Math.round(x.count / max * 80)}%"></i><span>${Number(x.date.slice(8))}</span>
+      <b>${x.count || ''}</b><i style="height:${Math.round(x.count / max * 80)}%;background:hsl(${Math.round(i * 280 / 13)} 72% 50%)"></i><span>${Number(x.date.slice(8))}</span>
     </div>`).join('');
 
   const opts = ['Needed', 'Ordered', 'Received', 'Installed'];
@@ -448,7 +519,7 @@ function shrink(file) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
-      const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+      const scale = Math.min(1, 1280 / Math.max(img.width, img.height));
       const c = document.createElement('canvas');
       c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
@@ -487,12 +558,23 @@ function setStatus(s) {
   document.querySelectorAll('.status button').forEach(b => b.setAttribute('aria-pressed', b.dataset.status === s));
 }
 document.querySelectorAll('.status button').forEach(b => b.addEventListener('click', () => setStatus(b.dataset.status)));
+$('t-parts').addEventListener('input', () => { if ($('t-parts').value.trim() && status === 'Closed') setStatus('Awaiting parts'); });
+
+/* "Feed roller kit 604K56080" → { part: "Feed roller kit", part_number: "604K56080" } */
+function parseParts(text) {
+  return text.split('\n').map(l => l.trim()).filter(Boolean).map(line => {
+    const m = line.match(/^(.*?)[\s,:\-–]+(#?[A-Za-z0-9][A-Za-z0-9\-\/.]{3,})$/);
+    if (m && /\d/.test(m[2]) && m[1].trim()) return { part: m[1].trim(), part_number: m[2].replace(/^#/, '') };
+    return { part: line, part_number: '' };
+  });
+}
+
 function showError(msg) { $('error').textContent = msg; $('error').hidden = false; }
 
 function resetForm() {
   photos = { serial: null, billing: null, part: [] };
   const defaults = {
-    serial: 'Required. Get the whole sticker in frame.',
+    serial: 'Photo, or type it below.',
     billing: 'Photo of the billing information screen.',
   };
   document.querySelectorAll('.tile').forEach(t => {
@@ -502,8 +584,8 @@ function resetForm() {
     if (defaults[k]) t.querySelector('small').textContent = defaults[k];
   });
   $('part-thumbs').innerHTML = '';
-  $('part-hint').textContent = 'One photo per part, label side up. Skip if none.';
-  ['customer', 'location', 'note'].forEach(id => $(id).value = '');
+  $('part-hint').textContent = 'Photo each part, or type them below.';
+  ['customer', 'location', 'note', 't-serial', 't-model', 't-parts'].forEach(id => $(id).value = '');
   setStatus('Closed');
   $('error').hidden = true;
 }
@@ -512,14 +594,20 @@ async function saveJob() {
   if (listening) rec.stop();
   $('error').hidden = true;
   if (!cfg()) return $('open-settings').click();
-  if (!photos.serial) return showError('Take the serial label photo first.');
-  const list = [{ kind: 'serial', dataUrl: photos.serial }];
+  const typed = {
+    serial: $('t-serial').value.trim().toUpperCase(),
+    model: $('t-model').value.trim(),
+    parts: parseParts($('t-parts').value),
+  };
+  if (!photos.serial && !typed.serial) return showError('Take the serial label photo or type the serial number.');
+  const list = [];
+  if (photos.serial) list.push({ kind: 'serial', dataUrl: photos.serial });
   if (photos.billing) list.push({ kind: 'billing', dataUrl: photos.billing });
   photos.part.forEach(d => list.push({ kind: 'part', dataUrl: d }));
   const job = {
     id: newId(), date: localDate(), createdAt: new Date().toISOString(),
     customer: $('customer').value.trim(), location: $('location').value.trim(),
-    status: status, note: $('note').value.trim(), photos: list,
+    status: status, note: $('note').value.trim(), photos: list, typed: typed,
   };
   try {
     await DB.put(job);
@@ -586,7 +674,8 @@ function showResult(job, r) {
   ];
   $('last-result').innerHTML = `<div class="result${r.missing.length ? ' flag' : ''}"><h3>Logged in the sheet</h3>
     <dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v || '—')}</dd>`).join('')}</dl>
-    ${r.missing.length ? `<p class="missing">Check in the sheet: ${esc(r.missing.join(', '))}. The photos are saved in Drive.</p>` : ''}</div>`;
+    ${r.readBy === 'none' ? `<p class="missing">Saved without reading the photos, so any meters or parts you didn’t type are blank. Photos are linked in the sheet.</p>` : ''}
+    ${r.missing.length ? `<p class="missing">Check in the sheet: ${esc(r.missing.join(', '))}.</p>` : ''}</div>`;
 }
 
 window.addEventListener('online', () => { updateVoice(); sync(); });
